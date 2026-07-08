@@ -1,0 +1,170 @@
+{
+  "_meta": {
+    "source": "../sigil-survivor/index.html",
+    "version": "v0.9"
+  },
+  "WEAPONS": {
+    "bolt": {
+      "name": "마력 화살",
+      "type": "boomerang",
+      "desc": "관통 부메랑 화살. 되돌아올 때 한 번 더 벱니다. Lv3부터 다발.",
+      "maxLv": 5,
+      "color": "#ffd166",
+      "base": {
+        "damage": 10,
+        "cooldown": 0.55,
+        "count": 1,
+        "speed": 430,
+        "range": 240
+      },
+      "perLv": {
+        "damage": 4,
+        "cooldown": -0.05,
+        "count": 0.5,
+        "speed": 20,
+        "range": 22
+      }
+    },
+    "aura": {
+      "name": "마력 오라",
+      "type": "aura",
+      "desc": "꺼지지 않는 지속 피해장을 두릅니다. 범위 안의 적은 느려집니다.",
+      "maxLv": 5,
+      "color": "#7aa2ff",
+      "base": {
+        "damage": 5,
+        "tick": 0.5,
+        "radius": 80,
+        "slow": 0.1
+      },
+      "perLv": {
+        "damage": 2,
+        "tick": -0.04,
+        "radius": 16,
+        "slow": 0.02
+      }
+    },
+    "slash": {
+      "name": "월아 참격",
+      "type": "cone",
+      "desc": "짧은 간격으로 부채꼴 검격을 연속으로 휘두릅니다. Lv4부터 후방 동시 베기.",
+      "maxLv": 5,
+      "color": "#c792ea",
+      "base": {
+        "damage": 10,
+        "cooldown": 0.45,
+        "range": 118,
+        "arcDeg": 90
+      },
+      "perLv": {
+        "damage": 4,
+        "cooldown": -0.04,
+        "range": 10,
+        "arcDeg": 7
+      }
+    }
+  },
+  "PASSIVES": {
+    "boots": {
+      "name": "신속의 장화",
+      "maxLv": 5,
+      "stat": "moveSpeed",
+      "per": 0.08,
+      "desc": "이동 속도 +8%"
+    },
+    "heart": {
+      "name": "생명의 심장",
+      "maxLv": 5,
+      "stat": "maxHp",
+      "per": 20,
+      "desc": "최대 체력 +20 (즉시 20 회복)"
+    },
+    "lens": {
+      "name": "탐욕의 렌즈",
+      "maxLv": 5,
+      "stat": "xpGain",
+      "per": 0.15,
+      "desc": "경험치 획득량 +15%"
+    },
+    "wind": {
+      "name": "바람의 잔향",
+      "maxLv": 4,
+      "stat": "dashCd",
+      "per": -0.12,
+      "desc": "대시 쿨다운 -12%"
+    }
+  },
+  "ENEMIES": {
+    "chaser": {
+      "name": "추격자",
+      "hp": 22,
+      "speed": 72,
+      "dmg": 8,
+      "r": 14,
+      "xp": 1,
+      "color": "#ff6b6b",
+      "shape": "circle",
+      "fromSec": 0
+    },
+    "runner": {
+      "name": "질주자",
+      "hp": 11,
+      "speed": 138,
+      "dmg": 5,
+      "r": 10,
+      "xp": 1,
+      "color": "#ffa94d",
+      "shape": "triangle",
+      "fromSec": 35
+    },
+    "tank": {
+      "name": "거수",
+      "hp": 58,
+      "speed": 44,
+      "dmg": 13,
+      "r": 22,
+      "xp": 3,
+      "color": "#b558f6",
+      "shape": "square",
+      "fromSec": 80
+    }
+  },
+  "DIFFS": {
+    "normal": {
+      "name": "보통",
+      "color": "#5ee6d0",
+      "hpMul": 1.0,
+      "dmgMul": 0.6,
+      "spawnMul": 1.0,
+      "bossMin": 3,
+      "bossHpMul": 1.0,
+      "bossDmgMul": 0.7,
+      "scoreMul": 1.0,
+      "unlockAfter": null
+    },
+    "hard": {
+      "name": "어려움",
+      "color": "#ffd166",
+      "hpMul": 1.45,
+      "dmgMul": 0.85,
+      "spawnMul": 1.3,
+      "bossMin": 5,
+      "bossHpMul": 1.8,
+      "bossDmgMul": 1.2,
+      "scoreMul": 1.5,
+      "unlockAfter": "normal"
+    },
+    "vhard": {
+      "name": "매우 어려움",
+      "color": "#ff5d73",
+      "hpMul": 2.4,
+      "dmgMul": 1.9,
+      "spawnMul": 1.6,
+      "bossMin": 6,
+      "bossHpMul": 3.0,
+      "bossDmgMul": 3.0,
+      "scoreMul": 2.0,
+      "unlockAfter": "hard"
+    }
+  }
+}
