@@ -2,7 +2,7 @@
 
 > 게임을 직접 만들고, 직접 QA하고, 반복되는 QA 작업을 도구화했습니다.
 
-**🎮 [플레이하기](https://USERNAME.github.io/sigil-survivor-qa/)** (Chrome 권장 · 설치 없음)
+**🎮 [플레이하기](https://TiZi97.github.io/sigil-survivor-qa/)** (Chrome 권장 · 설치 없음)
 
 탑다운 뱀서라이크 웹게임(HTML5/JS)을 v0.1부터 v0.8까지 개발하면서,
 매 버전 테스트 설계 → 버그 리포팅 → 회귀 검증 사이클을 운영하고
@@ -19,7 +19,7 @@
 
 ## ⏱ 바쁘신 분을 위한 3분 코스
 
-1. **[게임 플레이](https://USERNAME.github.io/sigil-survivor-qa/)** — 30초만 만져보세요. E키 드로잉 스킬이 핵심입니다
+1. **[게임 플레이](https://TiZi97.github.io/sigil-survivor-qa/)** — 30초만 만져보세요. E키 드로잉 스킬이 핵심입니다
 2. **[테스트 계획서](qa/test-plan.md)** — 범위·전략·종료 조건 등 QA 접근법 전체
 3. **[BUG-001 리포트](qa/bug-reports/BUG-001-pilot-sprite.md)** — 대표 버그 사례 (에셋 규격 불일치, 원인 분석 포함)
 4. **[스모크 결과](qa/smoke-results/)** — 자동화 테스트 실행 증적
