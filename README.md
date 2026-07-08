@@ -28,9 +28,9 @@
 
 ```
 game/          게임 본체 v0.9 + Playwright 스모크 (npm test로 즉시 실행 가능)
-qa/            테스트 계획서 · TC 38건(csv) · 밸런스 리포트 · 버그 리포트 · 스모크 결과
+qa/            테스트 계획서 · TC 40건(csv) · 밸런스 리포트 · 버그 리포트 · 스모크 결과
 automation/    game-qa-suite — QA 산출물 자동 생성 파이프라인 (Claude Skill)
-docs/          dev-log — v0.1→v0.8 개발·QA 히스토리
+docs/          dev-log — v0.1→v0.9 개발·QA 히스토리
 ```
 
 ## QA 파이프라인 — "코드가 곧 명세"
