@@ -5,7 +5,7 @@
 //   - 자동 스폰을 정지시켜 결정적(deterministic) 환경을 만들고
 //   - window.__T 훅으로 상태를 주입/관찰한다 (픽셀 비교가 아닌 상태 검증)
 //
-//   F-01 시길 드로잉 E2E — 도형 4종 각각 마우스 제스처 → 발동·게이지·도감 검증
+//   F-01 시길 드로잉 E2E — 도형 6종 각각 마우스 제스처 → 발동·게이지·도감 검증
 //   F-02 시길 불발 — 낙서 입력 → 정확히 -10 페널티, 도감 미등록
 //   F-03 도감 표시 — 20칸 균일 ?, 힌트 클릭/복귀 (BUG-002 회귀)
 //   F-04 난이도 해금 — 클리어 기록 유무 시나리오 (localStorage 제어)
@@ -42,6 +42,17 @@ const boltPath = () => [
 const veePath = () => [
   {x: CX - 75, y: CY - 55}, {x: CX, y: CY + 55}, {x: CX + 75, y: CY - 55}];
 const linePath = () => [{x: CX - 90, y: CY}, {x: CX + 90, y: CY}];
+const starPath = () => [0, 2, 4, 1, 3, 0].map(i => ({
+  x: CX + Math.cos(-Math.PI / 2 + i * Math.PI * 2 / 5) * 85,
+  y: CY + Math.sin(-Math.PI / 2 + i * Math.PI * 2 / 5) * 85,
+}));
+const heartPath = () => Array.from({length: 25}, (_, i) => {
+  const t = (i / 24) * Math.PI * 2;
+  return {
+    x: CX + 16 * Math.pow(Math.sin(t), 3) * 5.5,
+    y: CY - (13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t)) * 5.5,
+  };
+});
 
 async function startTestGame(page){
   await page.goto('/index.html?test=1');
@@ -51,7 +62,7 @@ async function startTestGame(page){
 
 test.describe('기능 회귀 스위트', () => {
 
-  test('F-01 시길 드로잉 E2E — 4종 발동·게이지·도감', async ({ page }) => {
+  test('F-01 시길 드로잉 E2E — 6종 발동·게이지·도감', async ({ page }) => {
     await startTestGame(page);
 
     // 원 → 수호 원환: 실드 생성 + 게이지 25 소모
@@ -84,9 +95,22 @@ test.describe('기능 회귀 스위트', () => {
     await drawGesture(page, linePath(), 5);
     expect(await page.evaluate(() => window.__T.player().sigil)).toBeCloseTo(75, 0);
 
-    // 도감: 4종 모두 발견 등록
+    // 하트 → 회생: HP 완전 회복 (v0.9.4)
+    await page.evaluate(() => { window.__T.player().hp = 20; window.__T.setSigil(100); });
+    await drawGesture(page, heartPath(), 3);
+    const hp = await page.evaluate(() =>
+      ({hp: window.__T.player().hp, max: window.__T.player().maxHp}));
+    expect(hp.hp, '하트 시길: HP 완전 회복 실패').toBe(hp.max);
+
+    // 별 → 성광: 파워업 버프 (v0.9.4)
+    await page.evaluate(() => window.__T.setSigil(100));
+    await drawGesture(page, starPath(), 7);
+    expect(await page.evaluate(() => window.__T.player().pwrT),
+      '별 시길: 파워업 미적용').toBeGreaterThan(0);
+
+    // 도감: 6종 모두 발견 등록
     const codex = await page.evaluate(() => window.__T.codex());
-    for (const k of ['circle', 'bolt', 'vee', 'line'])
+    for (const k of ['circle', 'bolt', 'vee', 'line', 'heart', 'star'])
       expect(codex[k], `도감 미등록: ${k}`).toBeTruthy();
   });
 
@@ -111,7 +135,7 @@ test.describe('기능 회귀 스위트', () => {
     await expect(page.locator('#codexGrid .slot.unlocked')).toHaveCount(0);
     // BUG-002 핵심: 미발견 슬롯에 티어 배경 클래스가 없어야 함
     await expect(page.locator('#codexGrid .slot.t1')).toHaveCount(0);
-    await expect(page.locator('#codexGrid .slot.hintable')).toHaveCount(4);
+    await expect(page.locator('#codexGrid .slot.hintable')).toHaveCount(6);  // v0.9.4: 회생·성광 추가
     // 힌트: 클릭 → SVG 문양 → 2.6초 후 ? 복귀
     const first = page.locator('#codexGrid .slot.hintable').first();
     await first.click();

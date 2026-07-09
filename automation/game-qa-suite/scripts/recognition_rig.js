@@ -74,6 +74,32 @@ const GEN = {
     }
     return stroke(wp, R(1.5, 3.5), 0);
   },
+  star(){
+    // 오각별 한붓그리기: 시작 꼭짓점·방향·꼭짓점 반경 편차·기울기 랜덤
+    const r = R(60, 100), start = Math.floor(R(0, 5)), cw = rnd() < 0.5;
+    const order = [0, 2, 4, 1, 3, 0];
+    const wp = order.map(o => {
+      const idx = cw ? o : (5 - o) % 5;
+      const a = -Math.PI / 2 + ((idx + start) % 5) * (Math.PI * 2 / 5);
+      const rr = r * R(0.85, 1.15);          // 꼭짓점마다 반경 들쭉날쭉
+      return {x: Math.cos(a) * rr, y: Math.sin(a) * rr};
+    });
+    return stroke(wp, R(1.5, 4), R(-0.35, 0.35));
+  },
+  heart(){
+    // 파라메트릭 하트: 좌우 봉우리 비대칭·세로비·양방향·기울기 랜덤
+    const sx_ = R(4.5, 7), sy_ = sx_ * R(0.8, 1.2), asym = R(0.85, 1.15);
+    const dir = rnd() < 0.5 ? 1 : -1;
+    const wp = [];
+    for (let i = 0; i <= 26; i++){
+      const t = dir * (i / 26) * Math.PI * 2;
+      let x = 16 * Math.pow(Math.sin(t), 3) * sx_;
+      if (x < 0) x *= asym;
+      wp.push({x,
+        y: -(13*Math.cos(t) - 5*Math.cos(2*t) - 2*Math.cos(3*t) - Math.cos(4*t)) * sy_});
+    }
+    return stroke(wp, R(1.5, 3.5), R(-0.2, 0.2));
+  },
   line(){
     const len = R(60, 140), ang = R(0, Math.PI * 2);
     const wp = [{x: 0, y: 0}, {x: Math.cos(ang) * len, y: Math.sin(ang) * len}];
@@ -82,12 +108,12 @@ const GEN = {
 };
 
 // ---------- 측정 ----------
-const SHAPES = ['bolt', 'vee', 'circle', 'line'];
+const SHAPES = ['bolt', 'vee', 'circle', 'line', 'star', 'heart'];
 const TRIALS = 500;
-const GOALS = {bolt: 0.90, vee: 0.90, circle: 0.90, line: 0.95};
+const GOALS = {bolt: 0.90, vee: 0.90, circle: 0.90, line: 0.95, star: 0.90, heart: 0.90};
 const MAX_CONFUSE = 0.02;
 const confusion = {};
-for (const s of SHAPES) confusion[s] = {bolt: 0, vee: 0, circle: 0, line: 0, MISS: 0};
+for (const s of SHAPES) confusion[s] = {bolt: 0, vee: 0, circle: 0, line: 0, star: 0, heart: 0, MISS: 0};
 
 for (const shape of SHAPES){
   for (let i = 0; i < TRIALS; i++){
@@ -99,7 +125,7 @@ for (const shape of SHAPES){
 }
 
 console.log(`도형별 ${TRIALS}회 · 임계값 ${THRESHOLD}\n`);
-console.log('실제\\판정   bolt   vee  circle line   MISS   인식률');
+console.log('실제\\판정   bolt   vee  circle line  star heart   MISS   인식률');
 for (const s of SHAPES){
   const c = confusion[s];
   const acc = (c[s] / TRIALS * 100).toFixed(1);
@@ -107,6 +133,7 @@ for (const s of SHAPES){
     s.padEnd(10),
     String(c.bolt).padStart(5), String(c.vee).padStart(5),
     String(c.circle).padStart(6), String(c.line).padStart(5),
+    String(c.star).padStart(5), String(c.heart).padStart(5),
     String(c.MISS).padStart(6), (acc + '%').padStart(8));
 }
 

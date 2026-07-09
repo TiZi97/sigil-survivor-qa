@@ -1,7 +1,7 @@
 {
   "_meta": {
     "source": "../sigil-survivor/index.html",
-    "version": "v0.9.3"
+    "version": "v0.9.4"
   },
   "WEAPONS": {
     "bolt": {
@@ -165,6 +165,118 @@
       "bossDmgMul": 3.0,
       "scoreMul": 2.0,
       "unlockAfter": "hard"
+    }
+  },
+  "SIGILS": {
+    "circle": {
+      "slot": 0,
+      "name": "수호 원환",
+      "glyph": "⭕",
+      "cost": 25,
+      "tier": 1,
+      "maxLv": 5,
+      "desc": "일정 시간 피해를 흡수하는 보호막",
+      "base": {
+        "pct": 0.4,
+        "dur": 3.0
+      },
+      "perLv": {
+        "pct": 0.08,
+        "dur": 0.5
+      },
+      "upDesc": "흡수량 +8%p, 지속 +0.5초"
+    },
+    "bolt": {
+      "slot": 1,
+      "name": "낙뢰",
+      "glyph": "⚡",
+      "cost": 30,
+      "tier": 1,
+      "maxLv": 5,
+      "desc": "주변 반경에 전격 대미지",
+      "base": {
+        "dmg": 60,
+        "radius": 240
+      },
+      "perLv": {
+        "dmg": 25,
+        "radius": 15
+      },
+      "upDesc": "피해 +25, 반경 +15"
+    },
+    "vee": {
+      "slot": 2,
+      "name": "질풍",
+      "glyph": "Ⅴ",
+      "cost": 20,
+      "tier": 1,
+      "maxLv": 5,
+      "desc": "일정 시간 이동속도 증가, 대시 쿨다운 초기화",
+      "base": {
+        "dur": 4.0,
+        "spd": 0.4
+      },
+      "perLv": {
+        "dur": 1.0,
+        "spd": 0.05
+      },
+      "upDesc": "지속 +1초, 이동속도 +5%p"
+    },
+    "line": {
+      "slot": 3,
+      "name": "참풍",
+      "glyph": "─",
+      "cost": 25,
+      "tier": 1,
+      "maxLv": 5,
+      "desc": "그린 방향으로 화면 전체를 관통하는 베기",
+      "base": {
+        "dmg": 45,
+        "width": 40
+      },
+      "perLv": {
+        "dmg": 18,
+        "width": 6
+      },
+      "upDesc": "피해 +18, 판정 폭 +6"
+    },
+    "heart": {
+      "slot": 4,
+      "name": "회생",
+      "glyph": "❤",
+      "cost": 85,
+      "tier": 2,
+      "maxLv": 5,
+      "desc": "HP를 완전히 회복. 초과 회복분은 보호막으로 전환",
+      "base": {
+        "pct": 1.0,
+        "over": 0
+      },
+      "perLv": {
+        "pct": 0,
+        "over": 0.1
+      },
+      "upDesc": "초과 회복분의 보호막 전환 +10%p"
+    },
+    "star": {
+      "slot": 5,
+      "name": "성광",
+      "glyph": "⭐",
+      "cost": 60,
+      "tier": 2,
+      "maxLv": 5,
+      "desc": "일정 시간 공격력과 이동속도가 크게 증가",
+      "base": {
+        "dur": 6.0,
+        "pwr": 0.25,
+        "spd": 0.15
+      },
+      "perLv": {
+        "dur": 1.5,
+        "pwr": 0.07,
+        "spd": 0.03
+      },
+      "upDesc": "지속 +1.5초, 공격력 +7%p, 이속 +3%p"
     }
   }
 }
