@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sigil Survivor — Prototype v0.9</title>
+<title>Sigil Survivor — Prototype v0.9.1</title>
 <style>
   :root{
     --bg:#0b0e14; --panel:#121826; --line:#1d2536;
@@ -109,6 +109,8 @@
     border-image:url('assets/img/frame-card.png') 32 round;background-clip:padding-box;padding:2px;
     min-height:92px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
   .slot .q{font-size:22px;color:#2c3648}
+  .slot.hintable{cursor:pointer}
+  .slot.hintable:hover .q{color:#c792ea}
   .slot.t1{background:#0d1815}
   .slot.unlocked{background:#0e1c1a;box-shadow:0 0 12px #5ee6d044, inset 0 0 14px #5ee6d022}
   .slot .sg{font-size:18px}
@@ -155,13 +157,13 @@
   </div>
   <div id="toast"></div>
 </div>
-<div id="ver">SIGIL SURVIVOR · PROTOTYPE v0.9 · MAGNET & AURA</div>
+<div id="ver">SIGIL SURVIVOR · PROTOTYPE v0.9.1 · CODEX FIX & HINTS</div>
 
 <!-- 시작 화면 -->
 <div class="overlay show" id="startOv">
   <div class="panel">
     <h1>SIGIL SURVIVOR</h1>
-    <div class="sub">v0.9 — 자석 아이템 · 마력 오라 · 성능 최적화<br>몰려오는 적을 버티고, 보스를 처치해 다음 난이도를 해금하세요.</div>
+    <div class="sub">v0.9.1 — 도감 표시 버그 수정 · 시길 문양 힌트<br>몰려오는 적을 버티고, 보스를 처치해 다음 난이도를 해금하세요.</div>
     <div class="keys">
       <kbd>W A S D</kbd><span>이동 (방향키 가능)</span>
       <kbd>Shift / Space</kbd><span>대시 — 짧은 무적, 쿨다운 2.5초</span>
@@ -1653,6 +1655,27 @@ function unlockCodex(key){
     toast(`✦ 새로운 시길 발견: ${SIGILS[key].name} — 도감에 기록되었습니다`);
   }
 }
+/* 시길 문양 힌트 — 그려야 할 궤적만 보여주고 정체는 숨긴다 (v0.9.1) */
+const HINT_SVG = {
+  circle: 'M50 15 A35 35 0 1 0 50.01 15',
+  bolt:   'M62 12 L38 52 L58 52 L40 88',
+  vee:    'M25 20 L50 80 L75 20',
+  line:   'M18 50 L82 50',
+};
+function showSlotHint(el, key){
+  if (el.dataset.hint || !HINT_SVG[key]) return;
+  el.dataset.hint = '1';
+  el.innerHTML =
+    `<svg viewBox="0 0 100 100" width="50" height="50">
+      <path d="${HINT_SVG[key]}" fill="none" stroke="#c792ea" stroke-width="7"
+            stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 8"/>
+    </svg><div class="sd">게임 중 E키 → 이 문양을 그려보세요</div>`;
+  setTimeout(() => {
+    delete el.dataset.hint;
+    el.innerHTML = `<div class="q">?</div>`;
+  }, 2600);
+}
+
 function renderCodex(){
   const c = loadCodex();
   const bySlot = {};
@@ -1668,8 +1691,15 @@ function renderCodex(){
       el.className = 'slot unlocked';
       el.innerHTML = `<div class="sg">${s.glyph}</div><div class="sn">${s.name}</div><div class="sd">${s.desc}</div>`;
     } else {
-      el.className = 'slot' + (s ? ' t' + s.tier : '');
+      // BUG-002 수정: 미발견 슬롯에 티어 배경이 적용되어 발견된 것처럼 보이던 문제
+      el.className = 'slot';
       el.innerHTML = `<div class="q">?</div>`;
+      if (s){
+        // 시길이 존재하는 슬롯은 클릭 시 문양 힌트 (이름·효과는 비밀 유지)
+        el.classList.add('hintable');
+        el.title = '클릭하면 문양 힌트를 볼 수 있습니다';
+        el.onclick = () => showSlotHint(el, s.key);
+      }
     }
     grid.appendChild(el);
   }

@@ -1,7 +1,7 @@
 {
   "_meta": {
     "source": "../sigil-survivor/index.html",
-    "version": "v0.9"
+    "version": "v0.9.1"
   },
   "WEAPONS": {
     "bolt": {

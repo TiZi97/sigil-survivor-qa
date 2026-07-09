@@ -1,4 +1,4 @@
-# 밸런스 리포트 — v0.9
+# 밸런스 리포트 — v0.9.1
 
 > 자동 생성: `balance_report.py /tmp/spec.json` · 기준 플레이어 HP 100
 
